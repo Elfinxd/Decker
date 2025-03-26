@@ -27,13 +27,13 @@ A **custom bridge network** offers several advantages:
 ✅ **DNS-Based Resolution** – Containers communicate via names instead of IPs.
 ✅ **Greater Control** – Define specific **subnets, IP ranges, and gateways**.
 
-To demonstrate, we create a **custom bridge network** called `tarak-bridge` and connect multiple containers.
+To demonstrate, we create a **custom bridge network** called `shivansh-bridge` and connect multiple containers.
 
 ---
 
 ## 🔧 1. Creating a Custom Bridge Network
 ```bash
-docker network create --driver bridge --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 tarak-bridge
+docker network create --driver bridge --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 shivansh-bridge
 ```
 ### 🔍 Explanation:
 - `--driver bridge` → Uses the default **bridge network mode**.
@@ -43,11 +43,11 @@ docker network create --driver bridge --subnet 172.20.0.0/16 --ip-range 172.20.2
 ---
 
 ## 🚀 2. Running Containers in the Custom Network
-### Running **Redis Container** (`tarak-database`)
+### Running **Redis Container** (`shivansh-database`)
 ```bash
 docker run -itd --net=tarak-bridge --name=shivansh-database redis
 ```
-### Running **BusyBox Container** (`tarak-server-A`)
+### Running **BusyBox Container** (`shivansh-server-A`)
 ```bash
 docker run -itd --net=tara-bridge --name=shivansh-server-A busybox
 ```
@@ -65,11 +65,11 @@ Expected Output:
 ---
 
 ## 🔄 3. Testing Communication Between Containers
-### Ping from **tarak-database** to **tarak-server-A**
+### Ping from **shivansh-database** to **shivansh-server-A**
 ```bash
 docker exec -it shivansh-database ping 172.20.240.2
 ```
-### Ping from **tarak-server-A** to **tarak-database**
+### Ping from **shivansh-server-A** to **shivansh-database**
 ```bash
 docker exec -it shivansh-server-A ping 172.20.240.1
 ```
@@ -78,11 +78,11 @@ docker exec -it shivansh-server-A ping 172.20.240.1
 ---
 
 ## 🚧 4. Demonstrating Network Isolation with a Third Container
-We add another container (`tarak-server-B`) on the **default bridge network**.
+We add another container (`shivansh-server-B`) on the **default bridge network**.
 ```bash
 docker run -itd --name=shivansh-server-B busybox
 ```
-### 📌 Get IP of `tarak-server-B`
+### 📌 Get IP of `shivansh-server-B`
 ```bash
 docker inspect -format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' shivansh-server-B
 ```
