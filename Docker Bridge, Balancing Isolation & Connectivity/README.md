@@ -45,21 +45,21 @@ docker network create --driver bridge --subnet 172.20.0.0/16 --ip-range 172.20.2
 ## 🚀 2. Running Containers in the Custom Network
 ### Running **Redis Container** (`tarak-database`)
 ```bash
-docker run -itd --net=tarak-bridge --name=tarak-database redis
+docker run -itd --net=tarak-bridge --name=shivansh-database redis
 ```
 ### Running **BusyBox Container** (`tarak-server-A`)
 ```bash
-docker run -itd --net=tara-bridge --name=tarak-server-A busybox
+docker run -itd --net=tara-bridge --name=shivansh-server-A busybox
 ```
 
 ### 📌 Check Container IPs
 ```bash
-docker network inspect tarak-bridge
+docker network inspect shivansh-bridge
 ```
 Expected Output:
 ```
- tarak-database: 172.20.240.1
- tarak-server-A: 172.20.240.2
+ shivansh-database: 172.20.240.1
+ shivansh-server-A: 172.20.240.2
 ```
 
 ---
@@ -67,11 +67,11 @@ Expected Output:
 ## 🔄 3. Testing Communication Between Containers
 ### Ping from **tarak-database** to **tarak-server-A**
 ```bash
-docker exec -it tarak-database ping 172.20.240.2
+docker exec -it shivansh-database ping 172.20.240.2
 ```
 ### Ping from **tarak-server-A** to **tarak-database**
 ```bash
-docker exec -it tarak-server-A ping 172.20.240.1
+docker exec -it shivansh-server-A ping 172.20.240.1
 ```
 ✅ Expected Outcome: Both containers should successfully **ping** each other.
 
@@ -80,20 +80,20 @@ docker exec -it tarak-server-A ping 172.20.240.1
 ## 🚧 4. Demonstrating Network Isolation with a Third Container
 We add another container (`tarak-server-B`) on the **default bridge network**.
 ```bash
-docker run -itd --name=tarak-server-B busybox
+docker run -itd --name=shivansh-server-B busybox
 ```
 ### 📌 Get IP of `tarak-server-B`
 ```bash
-docker inspect -format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' tarak-server-B
+docker inspect -format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' shivansh-server-B
 ```
 (Example IP: `172.17.0.2`)
 
 ---
 
 ## ❌ 5. Testing Communication Between Different Networks
-Ping from `tarak-database` to `tarak-server-B`:
+Ping from `shivansh-database` to `shivansh-server-B`:
 ```bash
-docker exec -it tarak-database ping 172.17.0.2
+docker exec -it shivansh-database ping 172.17.0.2
 ```
 🚨 **Expected Outcome:** The ping should **fail**, as they are on different networks.
 
@@ -102,11 +102,11 @@ docker exec -it tarak-database ping 172.17.0.2
 ## 🔍 6. Confirming Network Isolation
 ### Inspect Networks
 ```bash
-docker network inspect tarak-bridge
+docker network inspect shivansh-bridge
 docker network inspect bridge
 ```
-✅ `tarak-bridge` should contain `tarak-database` & `tarak-server-A`.
-✅ `bridge` should contain `tarak-server-B`.
+✅ `shivansh-bridge` should contain `shivansh-database` & `shivansh-server-A`.
+✅ `bridge` should contain `shivansh-server-B`.
 
 ---
 
